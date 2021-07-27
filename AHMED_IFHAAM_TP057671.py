@@ -15,13 +15,15 @@ print("*" * 12, "\n")
 def clear():
     _ = system('clear')
 
-
 # custom-defined Exceptions
 class InvalidChoiceError(Exception):
     pass
 class InvalidVehicleError(Exception):
     pass
-
+class InvalidRegistrationNumberError(Exception):
+    pass
+class InvalidTimeError(Exception):
+    pass
 
 class Vehicle:
     pass
@@ -101,8 +103,35 @@ def vehicleTypeVerification() -> str:
             print(Error)
         else:
             validated = True
-    return vehicle[0]
+    return vehicle[0].upper()
 
+
+def verifyRegistrationNumber() -> str:
+    validated = False
+    while not validated:
+        try:
+            regNumber = str(input("Vehicle Registraion Number : "))
+            if len(regNumber) == 0 or len(regNumber) > 10:
+                raise InvalidRegistrationNumberError("Invalid Registration Number\n")
+        except InvalidRegistrationNumberError as error:
+                print(error)
+        else:
+            validated = True
+    return regNumber
+
+
+def verifyCheckInTime():
+    validated = False
+    while not validated:
+        try:
+            inTime = int(input("Enter Check-In Time <- [00:00] - [23:59] : "))
+            if inTime > 2359 or inTime < 0:
+                raise InvalidTimeError("Error: Enter a number between 0 & 2359\n")
+        except InvalidTimeError as error:
+            print(error)
+        else:
+            validated = True
+    return inTime
 
 def vehicleCheckIn():
     clear()
@@ -110,8 +139,22 @@ def vehicleCheckIn():
             VEHICLE CHECK-IN MENU
             *********************\n""")
     vehicle = vehicleTypeVerification()
-    
+    vehi_RegNo = verifyRegistrationNumber()
+    checkInTime = "XXX"
+    vehicleDict = {"registrationNumber" : vehi_RegNo,
+                    "vehicleType" : vehicle,
+                    "checkInTime" : checkInTime,
+                    "checkOutTime" : None,
+    }
+    if vehicle == 'C':
+        pass
+    elif vehicle == 'V':
+        pass
+    elif vehicle == 'M':
+        pass
     print(vehicle)
+
+
 
 
 while True:
