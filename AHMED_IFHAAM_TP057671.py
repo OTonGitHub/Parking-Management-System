@@ -4,8 +4,6 @@
 # RESTRICTIONS
 # SCOPE: GLOBAL VARIABLES NOT ALLOWED
 # OR ON "GLOBAL" Keyword in Functions ?
-#upload to github
-#testing up send
 from time import sleep
 from os import system, name
 from abc import ABC, abstractmethod
