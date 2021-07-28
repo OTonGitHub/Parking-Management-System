@@ -1,5 +1,6 @@
 import string
 import re
+import os
 try:
     lineList: list = []
     with open("test.txt", 'r') as file:
@@ -45,3 +46,32 @@ except FileNotFoundError as error:
 for line in lineList:
     print(line['checkInTime'])
 
+print(os.stat("test.txt").st_size)
+print(os.path.getsize("test.txt"))
+
+# with open("test.txt", 'r') as file:
+#     file.seek(0, os.SEEK_END)
+#     if file.tell():
+#         print("is not Empty")
+#         file.seek(0)
+#     else:
+#         print("File is Empty")
+
+
+# content = open("test.txt", 'r').read()
+# if re.search(r'^\s*$', content):
+#     print("isEmpty")
+
+def isFileEmpty(filename) -> bool:
+    fileDir = os.path.dirname(__file__)  # <-- absolute dir the script is in
+    rel_path = "test.txt"
+    abs_file_path = os.path.join(fileDir, rel_path)
+        #removes absolute path errors
+        #TODO remove after testing
+
+    with open(abs_file_path, 'r') as file:
+        line = file.readline()
+        print(line[0])
+        if line[0] != '{':
+            return True
+    return False

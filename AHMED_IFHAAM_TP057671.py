@@ -9,6 +9,7 @@ from os import system, name
 from abc import ABC, abstractmethod
 import string
 import re
+import os
 
 print("OT's CPython")
 print("*" * 12, "\n")
@@ -143,12 +144,30 @@ def verifyCheckInTime() -> int:
             validated = True
     return inTime
 
-def giveParkingLot() -> int:
+
+def isFileEmpty(filename: str) -> bool:
+    fileDir = os.path.dirname(__file__)  # <-- absolute dir the script is in
+    rel_path = filename
+    abs_file_path = os.path.join(fileDir, rel_path)
+    #removes absolute path errors
+    #TODO remove after testing
+        #TODO add reference to python doc & so
+
+    with open(abs_file_path, 'r') as file:
+        line = file.readline()
+        print(line[0])
+        if line[0] != '{':
+            return True
+    return False
+
+
+def assignParkingLot() -> int:
+    if isFileEmpty("test.txt"):
+        return 1
     listDictionary = mightyFileDictionaryToListDictionary()
-    
     try:
         with open("test.txt", 'r') as file:
-            line = file.readline()
+            pass
     except FileNotFoundError as error:
         print(error,"\nThere was an error creating 'test.txt'")
     return 0
@@ -186,7 +205,7 @@ def vehicleCheckIn() -> dict:
     vehicle: str = vehicleTypeVerification()
     vehi_RegNo: str = verifyRegistrationNumber()
     checkInTime: int = verifyCheckInTime()
-    parkingLot: int = giveParkingLot()
+    parkingLot: int = assignParkingLot()
     vehicleDict = {"lot" : parkingLot,
                     "registrationNumber" : vehi_RegNo,
                     "vehicleType" : vehicle,
