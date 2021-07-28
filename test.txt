@@ -1,0 +1,5 @@
+{'registrationNumber': 'AA323', 'vehicleType': 'M', 'checkInTime': 1900, 'checkOutTime': None}
+{'registrationNumber': '1', 'vehicleType': 'V', 'checkInTime': 2309, 'checkOutTime': None}
+{'registrationNumber': 'AAO 9980', 'vehicleType': 'C', 'checkInTime': 1, 'checkOutTime': None}
+{'registrationNumber': '1', 'vehicleType': 'C', 'checkInTime': 1, 'checkOutTime': None}
+{'registrationNumber': '1', 'vehicleType': 'C', 'checkInTime': 1, 'checkOutTime': None}

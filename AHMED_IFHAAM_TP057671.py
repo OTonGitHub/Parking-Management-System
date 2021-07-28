@@ -59,10 +59,6 @@ def accountsMenu():
     print("0 : Back to Main Menu")
 
     choice = evaluateChoice(min = 0, max = 2)
-    if choice == 1:
-        for vehicle in vehicleList:
-            print(vehicle)
-        input("\nPress any key to continue..")
     clear()
 
 
@@ -137,7 +133,7 @@ def verifyCheckInTime() -> int:
             validated = True
     return inTime
 
-def vehicleCheckIn():
+def vehicleCheckIn() -> dict:
     clear()
     print("""
             VEHICLE CHECK-IN MENU
@@ -159,15 +155,17 @@ def vehicleCheckIn():
     return vehicleDict
 
 
+def writeToFile(line: dict):
+    with open("test.txt", 'a') as file:
+        file.write(str(line)+"\n")
 
-vehicleList = []
+
 while True:
     choice = mainMenu()
     if choice == 1:
         vehicle = vehicleCheckIn()
-        vehicleList.append(vehicle)
-        print("\nPress any key to continue..")
-        input()
+        writeToFile(line = vehicle)
+        input("\nPress any key to continue..")
         clear()
     elif choice == 2:
         print("You have chosen option 2")
