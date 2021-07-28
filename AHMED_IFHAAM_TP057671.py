@@ -59,6 +59,10 @@ def accountsMenu():
     print("0 : Back to Main Menu")
 
     choice = evaluateChoice(min = 0, max = 2)
+    if choice == 1:
+        for vehicle in vehicleList:
+            print(vehicle)
+        input("\nPress any key to continue..")
     clear()
 
 
@@ -120,7 +124,7 @@ def verifyRegistrationNumber() -> str:
     return regNumber
 
 
-def verifyCheckInTime():
+def verifyCheckInTime() -> int:
     validated = False
     while not validated:
         try:
@@ -138,9 +142,9 @@ def vehicleCheckIn():
     print("""
             VEHICLE CHECK-IN MENU
             *********************\n""")
-    vehicle = vehicleTypeVerification()
-    vehi_RegNo = verifyRegistrationNumber()
-    checkInTime = "XXX"
+    vehicle: str = vehicleTypeVerification()
+    vehi_RegNo: str = verifyRegistrationNumber()
+    checkInTime: int = verifyCheckInTime()
     vehicleDict = {"registrationNumber" : vehi_RegNo,
                     "vehicleType" : vehicle,
                     "checkInTime" : checkInTime,
@@ -152,15 +156,16 @@ def vehicleCheckIn():
         pass
     elif vehicle == 'M':
         pass
-    print(vehicle)
+    return vehicleDict
 
 
 
-
+vehicleList = []
 while True:
     choice = mainMenu()
     if choice == 1:
-        vehicleCheckIn()
+        vehicle = vehicleCheckIn()
+        vehicleList.append(vehicle)
         print("\nPress any key to continue..")
         input()
         clear()
