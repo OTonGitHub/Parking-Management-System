@@ -7,6 +7,8 @@
 from time import sleep
 from os import system, name
 from abc import ABC, abstractmethod
+import string
+import re
 
 print("OT's CPython")
 print("*" * 12, "\n")
@@ -59,6 +61,14 @@ def accountsMenu():
     print("0 : Back to Main Menu")
 
     choice = evaluateChoice(min = 0, max = 2)
+
+    if choice == 1:
+        with open("test.txt", 'r') as file:
+            for line in file.readlines():
+                print(line)
+        input("\nPress any key to continue..")
+    elif choice == 2:#no need elif, can use if
+        pass
     clear()
 
 
@@ -133,6 +143,41 @@ def verifyCheckInTime() -> int:
             validated = True
     return inTime
 
+def giveParkingLot() -> int:
+    listDictionary = mightyFileDictionaryToListDictionary()
+    
+    try:
+        with open("test.txt", 'r') as file:
+            line = file.readline()
+    except FileNotFoundError as error:
+        print(error,"\nThere was an error creating 'test.txt'")
+    return 0
+
+def mightyFileDictionaryToListDictionary() -> list:
+    try:
+        lineList: list = []
+        with open("test.txt", 'r') as file:
+            for line in file.readlines():
+                lineDict: dict = {}
+                line = line[1:(len(line)-2)]
+                    #-2 to negate \n char in file
+                line = line.translate(str.maketrans('', '', string.whitespace))
+                    #.replace() with timeit() proved 3 times slower
+                line = line.replace("'", '')
+                pattern = re.compile(r"([\w]+):([A-Za-z0-9-]+)")
+                    #pattern = re.compile(r"('[\w]+'):([A-Za-z0-9]+|'[A-Za-z0-9]+')")
+                    #TODO fix '-' in group(2)
+                    #TODO include re.IGNORECASE flag
+                matches = pattern.finditer(line)
+                for match in matches:
+                    (key, value) = match.group(1), match.group(2)
+                    lineDict[key] = value
+                lineList.append(lineDict)
+    except FileNotFoundError as error:
+        print(error, "\nFile name should be 'test.txt'")
+    return lineList
+
+
 def vehicleCheckIn() -> dict:
     clear()
     print("""
@@ -141,7 +186,9 @@ def vehicleCheckIn() -> dict:
     vehicle: str = vehicleTypeVerification()
     vehi_RegNo: str = verifyRegistrationNumber()
     checkInTime: int = verifyCheckInTime()
-    vehicleDict = {"registrationNumber" : vehi_RegNo,
+    parkingLot: int = giveParkingLot()
+    vehicleDict = {"lot" : parkingLot,
+                    "registrationNumber" : vehi_RegNo,
                     "vehicleType" : vehicle,
                     "checkInTime" : checkInTime,
                     "checkOutTime" : None,
