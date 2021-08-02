@@ -97,9 +97,14 @@ def mainMenu():
     return evaluateChoice(min=0, max=4)
 
 
+def generateRecordsWithTotal():
+    dictList = mightyFileDictionaryToListDictionary("checkOut.txt")
+    
+    pass
+
 def accountsMenu():
     clear()
-    print("1 : View All Transactions [total]")
+    print("1 : View Total Amount for Each Vehicle Type")
     print("2 : Filter all Transactions exceeding RM8")
     # TODO Filter by Custom Amount, Default 8
     print("0 : Back to Main Menu")
@@ -107,11 +112,12 @@ def accountsMenu():
     choice = evaluateChoice(min=0, max=2)
 
     if choice == 1:
-        with open("checkIn.txt", 'r') as file:
+        with open("checkOut.txt", 'r') as file:
             for line in file.readlines():
                 print(line)
         input("\nPress any key to continue..")
     elif choice == 2:  # no need elif, can use if
+
         pass
     clear()
 
@@ -212,7 +218,7 @@ def assignParkingLot() -> int:
             return 1
         lotList = []
         with open("checkIn.txt", 'r'):
-            listDictionary = mightyFileDictionaryToListDictionary()
+            listDictionary = mightyFileDictionaryToListDictionary("checkIn.txt")
             for line in listDictionary:
                 lotList.append(int(line["lot"]))
         #lotList = list(lotList)
@@ -228,10 +234,10 @@ def assignParkingLot() -> int:
         print(error, "\nThere was an error creating 'checkIn.txt'")
 
 
-def mightyFileDictionaryToListDictionary() -> list:
+def mightyFileDictionaryToListDictionary(fileName: str) -> list:
     try:
         lineList: list = []
-        with open("checkIn.txt", 'r') as file:
+        with open(fileName, 'r') as file:
             for line in file.readlines():
                 lineDict: dict = {}
                 line = line[1:(len(line)-2)]
@@ -249,7 +255,7 @@ def mightyFileDictionaryToListDictionary() -> list:
                     lineDict[key] = value
                 lineList.append(lineDict)
     except FileNotFoundError as error:
-        print(error, "\nFile name should be 'checkIn.txt'")
+        print(error, "\nFile name should be 'check(In/Out).txt'")
     return lineList
 
 
@@ -291,7 +297,7 @@ def writeToFile(line: dict):
 
 # no need to verify, already verified when registering
 def plateNumberExists(plate: str):
-    dictList = mightyFileDictionaryToListDictionary()
+    dictList = mightyFileDictionaryToListDictionary("checkIn.txt")
     for dict in dictList:
         if dict['registrationNumber'] == plate:
             return dict
@@ -325,7 +331,7 @@ def vehicleCheckOut():
     price = calculatePrice(vehicleRecord)
 
     #copy contents of checkIn.txt into a list
-    checkInRecordsList = mightyFileDictionaryToListDictionary()
+    checkInRecordsList = mightyFileDictionaryToListDictionary("checkIn.txt")
 
     #delete Record from checkIn.txt
     with open("checkIn.txt", 'w') as file:

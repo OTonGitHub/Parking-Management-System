@@ -17,4 +17,3 @@
 {'lot': '17', 'registrationNumber': '1', 'vehicleType': 'C', 'checkInTime': '1', 'checkOutTime': 'None'}
 {'lot': '18', 'registrationNumber': '1', 'vehicleType': 'C', 'checkInTime': '1', 'checkOutTime': 'None'}
 {'lot': '19', 'registrationNumber': '1', 'vehicleType': 'C', 'checkInTime': '1', 'checkOutTime': 'None'}
-{'lot': 20, 'registrationNumber': 'AA696', 'vehicleType': 'M', 'checkInTime': 1800, 'checkOutTime': None}
