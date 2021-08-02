@@ -44,19 +44,46 @@ class InvalidTimeError(Exception):
 
 
 class Vehicle:
-    pass
+    hour_1 = 4
+    hour_2_3 = 2
+    hour_4_ = 1
+
+    def __init__(self, record: dict):
+        self.checkInTime = int(record['checkInTime'])
+        self.checkOutTime = int(record['checkOutTime'])
+
+    def __calculateDuration(self):
+        return abs(self.checkOutTime - self.checkInTime)
+
+    def calculateTotalPrice(self):
+        time = self.__calculateDuration()
+        totalPrice = self.hour_1
+        if time > 100:
+            totalPrice = totalPrice + self.hour_2_3
+        if time > 200:
+            totalPrice = totalPrice + self.hour_2_3
+        if time > 300:
+            totalPrice = totalPrice + ((time - 300) / 100) * self.hour_4_
+
+        return totalPrice
 
 
-class Car:
-    pass
+class Car(Vehicle):
+    hour_1 = 4
+    hour_2_3 = 2
+    hour_4_ = 1
 
 
-class Van:
-    pass
+class Van(Vehicle):
+    hour_1 = 6
+    hour_2_3 = 3
+    hour_4_ = 2
 
 
-class Motorbike:
-    pass
+class Motorbike(Vehicle):
+    hour_1 = 2
+    hour_2_3 = 1
+    hour_4_ = 0
 
 
 def mainMenu():
@@ -152,7 +179,8 @@ def verifyCheckInTime() -> int:
     validated = False
     while not validated:
         try:
-            inTime = int(input("Enter Check-In Time <- [00:00] - [23:59] : "))
+            inTime = int(
+                input("Enter Check-In/Out Time <- [00:00] - [23:59] : "))
             if inTime > 2359 or inTime < 0:
                 raise InvalidTimeError(
                     "Error: Enter a number between 0 & 2359\n")
@@ -188,7 +216,7 @@ def assignParkingLot() -> int:
             for line in listDictionary:
                 lotList.append(int(line["lot"]))
         #lotList = list(lotList)
-        #print(lotList)
+        # print(lotList)
         for x in range(1, 21):
             #print("Checking Lot.. ", x)
             lot = x
@@ -235,9 +263,9 @@ def vehicleCheckIn():
         print("Warning: ALL LOTS OCCUPIED!")
         return None
     elif parkingLot <= 10:  # TODO DEF FUNCTION
-        print("|--> FLOOR : 1 | LOT : ", parkingLot,"\n")
+        print("|--> FLOOR : 1 | LOT : ", parkingLot, "\n")
     elif parkingLot > 10:
-        print("|--> FLOOR : 2 | LOT : ", parkingLot,"\n")
+        print("|--> FLOOR : 2 | LOT : ", parkingLot, "\n")
     vehicle: str = vehicleTypeVerification()
     vehi_RegNo: str = verifyRegistrationNumber()
     checkInTime: int = verifyCheckInTime()
@@ -261,6 +289,44 @@ def writeToFile(line: dict):
         file.write(str(line)+"\n")
 
 
+# no need to verify, already verified when registering
+def plateNumberExists(plate: str):
+    dictList = mightyFileDictionaryToListDictionary()
+    for dict in dictList:
+        if dict['registrationNumber'] == plate:
+            return dict
+    else:
+        return 404
+
+
+def calculatePrice(record: dict):
+    if record['vehicleType'] == 'C':
+        recObj = Car(record)
+    elif record['vehicleType'] == 'M':
+        recObj = Motorbike(record)
+    elif record['vehicleType'] == 'V':
+        recObj = Van(record)
+
+    price = recObj.calculateTotalPrice()
+
+    return price
+
+
+def vehicleCheckOut():
+    clear()
+    print("""VEHICLE CHECK-OUT MENU
+*********************\n""")
+    vehicleRecord = plateNumberExists(
+        str(input("Enter Registration Number : ")))
+    if vehicleRecord == 404:
+        return 404
+    else:
+        vehicleRecord['checkOutTime'] = verifyCheckInTime()
+    price = calculatePrice(vehicleRecord)
+    
+    print("Total Price for Parking : ", price)
+
+
 while True:
     choice = mainMenu()
     if choice == 1:
@@ -271,9 +337,10 @@ while True:
             writeToFile(line=vehicle)
         clear()
     elif choice == 2:
-        print("You have chosen option 2")
-        print("Press any key to continue..")
-        input()
+        reply = vehicleCheckOut()
+        if reply == 404:
+            print("[404] : Vehicle Not Found..")
+        input("\nPress any key to continue..")
         clear()
     elif choice == 3:
         accountsMenu()
