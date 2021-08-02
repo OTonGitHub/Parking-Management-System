@@ -6,7 +6,7 @@
 # OR ON "GLOBAL" Keyword in Functions ?
 
 # TODO
-# test.txt missing case
+# checkIn.txt missing case
 # non integer for int
 # regex for time
 
@@ -107,7 +107,7 @@ def accountsMenu():
     choice = evaluateChoice(min=0, max=2)
 
     if choice == 1:
-        with open("test.txt", 'r') as file:
+        with open("checkIn.txt", 'r') as file:
             for line in file.readlines():
                 print(line)
         input("\nPress any key to continue..")
@@ -208,10 +208,10 @@ def isFileEmpty(filename: str) -> bool:
 
 def assignParkingLot() -> int:
     try:
-        if isFileEmpty("test.txt"):
+        if isFileEmpty("checkIn.txt"):
             return 1
         lotList = []
-        with open("test.txt", 'r'):
+        with open("checkIn.txt", 'r'):
             listDictionary = mightyFileDictionaryToListDictionary()
             for line in listDictionary:
                 lotList.append(int(line["lot"]))
@@ -225,13 +225,13 @@ def assignParkingLot() -> int:
         else:
             return -1
     except FileNotFoundError as error:
-        print(error, "\nThere was an error creating 'test.txt'")
+        print(error, "\nThere was an error creating 'checkIn.txt'")
 
 
 def mightyFileDictionaryToListDictionary() -> list:
     try:
         lineList: list = []
-        with open("test.txt", 'r') as file:
+        with open("checkIn.txt", 'r') as file:
             for line in file.readlines():
                 lineDict: dict = {}
                 line = line[1:(len(line)-2)]
@@ -249,7 +249,7 @@ def mightyFileDictionaryToListDictionary() -> list:
                     lineDict[key] = value
                 lineList.append(lineDict)
     except FileNotFoundError as error:
-        print(error, "\nFile name should be 'test.txt'")
+        print(error, "\nFile name should be 'checkIn.txt'")
     return lineList
 
 
@@ -285,7 +285,7 @@ def vehicleCheckIn():
 
 
 def writeToFile(line: dict):
-    with open("test.txt", 'a') as file:
+    with open("checkIn.txt", 'a') as file:
         file.write(str(line)+"\n")
 
 
@@ -323,7 +323,20 @@ def vehicleCheckOut():
     else:
         vehicleRecord['checkOutTime'] = verifyCheckInTime()
     price = calculatePrice(vehicleRecord)
+
+    #copy contents of checkIn.txt into a list
+    checkInRecordsList = mightyFileDictionaryToListDictionary()
+
+    #delete Record from checkIn.txt
+    with open("checkIn.txt", 'w') as file:
+        for record in checkInRecordsList:
+            if record['registrationNumber'] != vehicleRecord['registrationNumber']:
+                file.write(str(record)+"\n")
+    #append record to checkOut
+    with open("checkOut.txt", 'a') as file:
+        file.write(str(vehicleRecord)+"\n")
     
+
     print("Total Price for Parking : ", price)
 
 

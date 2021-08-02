@@ -1,0 +1,1 @@
+{'lot': '20', 'registrationNumber': 'AA034', 'vehicleType': 'V', 'checkInTime': '1342', 'checkOutTime': 2357}
