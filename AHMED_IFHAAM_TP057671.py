@@ -1,5 +1,6 @@
 # AHMED IFHAAM
 # TP057671
+#POST-SUBMISSION
 
 # RESTRICTIONS
 # SCOPE: GLOBAL VARIABLES NOT ALLOWED
@@ -48,7 +49,7 @@ class Vehicle:
     hour_2_3 = 2
     hour_4_ = 1
 
-    def __init__(self, record: dict):
+    def __init__(self, record):
         self.checkInTime = int(record['checkInTime'])
         self.checkOutTime = int(record['checkOutTime'])
 
